@@ -1,28 +1,26 @@
-package com.bohaienko.LR2.utils;
+package com.bohaienko.lr2.utils;
 
-import com.bohaienko.LR2.model.Dictionary;
-import com.bohaienko.LR2.model.Probability;
-import com.bohaienko.LR2.model.VerificationData;
-import com.uttesh.exude.exception.InvalidDataException;
+import com.bohaienko.lr2.model.Dictionary;
+import com.bohaienko.lr2.model.Probability;
+import com.bohaienko.lr2.model.VerificationData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 @Service
-public class Analizer {
+public class Analyzer {
 
 	@Autowired
 	Parser parser;
 
 	private List<Dictionary> dictionaries;
-	private List<Probability> probabilities;
 	private List<VerificationData> data;
 	private Map<String, Double> probabilityValues;
 
-	public List<Dictionary> buildDictionary(String[] topics, List<List<String>> wordLists)
-			throws InvalidDataException {
+	public List<Dictionary> buildDictionary(String[] topics, List<List<String>> wordLists) {
 		dictionaries = new ArrayList<>();
 		for (int i = 0; i < topics.length; i++) {
 			int finalI = i;
@@ -46,35 +44,29 @@ public class Analizer {
 	}
 
 	public List<Probability> getDenormalizedProbability(List<Dictionary> usages) {
-		probabilities = new ArrayList<>();
-		usages.forEach(entry -> {
-			calculateDenormProbability(entry.getUsage());
-			probabilities.add(new Probability(
-					entry.getWord(),
-					calculateDenormProbability(entry.getUsage()))
-			);
-		});
-		return probabilities;
+		return usages
+				.stream()
+				.map(entry -> new Probability(entry.getWord(), calculateDenormProbability(entry.getUsage())))
+				.collect(Collectors.toList());
 	}
 
-	public List<Probability> getNormalizedProbability(List<Dictionary> wordUsages, List<Probability> denormProbablities) {
-		probabilities = new ArrayList<>();
-		wordUsages.forEach(entry -> {
-			Map<String, Double> denormProbabilityOfTopics = denormProbablities.stream()
-					.filter(e -> e.getWord().equals(entry.getWord()))
-					.findFirst().get().getProbability();
-			probabilities.add(new Probability(
-					entry.getWord(),
-					calculateNormalizedProbability(
-							entry.getUsage(),
-							denormProbabilityOfTopics
-					))
-			);
-		});
-		return probabilities;
+	public List<Probability> getNormalizedProbability(List<Dictionary> wordUsages, List<Probability> denormProbabilities) {
+		return wordUsages
+				.stream()
+				.map(entry -> new Probability(
+						entry.getWord(),
+						calculateNormalizedProbability(
+								entry.getUsage(),
+								denormProbabilities
+										.stream()
+										.filter(e -> e.getWord().equals(entry.getWord()))
+										.findFirst().get().getProbability()
+						)
+				))
+				.collect(Collectors.toList());
 	}
 
-	public List<VerificationData> varifyClassification(List<List<String>> testSet, String[] topics, List<Probability> normalizedProbabilities) {
+	public List<VerificationData> verifyClassification(List<List<String>> testSet, String[] topics, List<Probability> normalizedProbabilities) {
 		data = new ArrayList<>();
 		System.out.println(testSet);
 
@@ -83,34 +75,34 @@ public class Analizer {
 			testSet.get(i).forEach(e -> {
 				System.out.println(e);
 				List<String> words = parser.getWordListOfText(e);
-				final String[] clasiffiedTopic = {null};
-				final double[] classifiedProbability = {0};
-				AtomicBoolean isClassifiedCorrectly = new AtomicBoolean(false);
+				final String[] classificatedTopic = {null};
+				final double[] classificatedProbability = {0};
+				AtomicBoolean isClassificatedCorrectly = new AtomicBoolean(false);
 
 				Arrays.asList(topics).forEach(topic -> {
 					List<Double> topicProb = new ArrayList<>();
 					words.forEach(word -> {
 						if (normalizedProbabilities.stream().anyMatch(prob -> prob.getWord().equals(word))) {
-							Map<String, Double> wordProb = normalizedProbabilities.stream().filter(prob -> prob.getWord().equals(word)).findFirst().get().getProbability();
+							Map<String, Double> wordProb = normalizedProbabilities
+									.stream()
+									.filter(prob -> prob.getWord().equals(word)).findFirst().get().getProbability();
 							topicProb.add(wordProb.get(topic));
 						}
 					});
-					double multProb = topicProb.stream().reduce(0.5, (a, b) -> a * b);
-					System.out.println(topicProb);
-					System.out.println(topicProb.isEmpty());
+					double multipliedProb = topicProb.stream().reduce(0.5, (a, b) -> a * b);
 
-					if (multProb > classifiedProbability[0]) {
-						classifiedProbability[0] = multProb;
-						clasiffiedTopic[0] = topic;
+					if (multipliedProb > classificatedProbability[0]) {
+						classificatedProbability[0] = multipliedProb;
+						classificatedTopic[0] = topic;
 					}
 
 					if (topicProb.isEmpty()) {
-						classifiedProbability[0] = 0.0;
-						clasiffiedTopic[0] = "Topic was not classified";
+						classificatedProbability[0] = 0.0;
+						classificatedTopic[0] = "Topic was not classified";
 					}
-					isClassifiedCorrectly.set(topics[finalI].equals(clasiffiedTopic[0]));
+					isClassificatedCorrectly.set(topics[finalI].equals(classificatedTopic[0]));
 				});
-				data.add(new VerificationData(e, topics[finalI], clasiffiedTopic[0], classifiedProbability[0], isClassifiedCorrectly.get()));
+				data.add(new VerificationData(e, topics[finalI], classificatedTopic[0], classificatedProbability[0], isClassificatedCorrectly.get()));
 			});
 		}
 		return data;
@@ -128,9 +120,8 @@ public class Analizer {
 		int usage = topicUsage.values().stream().reduce(0, Integer::sum);
 		topicUsage.forEach((k, v) -> {
 			double pProb = classProbability.get(k);
-			double nWord = (double) usage;
 			double pClass = 1 / (double) topicUsage.size();
-			double pNorm = (nWord * pProb + pClass) / (nWord + 1);
+			double pNorm = (usage * pProb + pClass) / (usage + 1);
 			probabilityValues.put(k, pNorm);
 		});
 		return probabilityValues;

@@ -1,4 +1,4 @@
-package com.bohaienko.LR2.model;
+package com.bohaienko.lr2.model;
 
 import java.util.Map;
 

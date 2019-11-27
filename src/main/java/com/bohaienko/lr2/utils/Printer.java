@@ -1,8 +1,8 @@
-package com.bohaienko.LR2.utils;
+package com.bohaienko.lr2.utils;
 
-import com.bohaienko.LR2.model.Dictionary;
-import com.bohaienko.LR2.model.Probability;
-import com.bohaienko.LR2.model.VerificationData;
+import com.bohaienko.lr2.model.Dictionary;
+import com.bohaienko.lr2.model.Probability;
+import com.bohaienko.lr2.model.VerificationData;
 import dnl.utils.text.table.TextTable;
 import org.apache.commons.lang.ArrayUtils;
 import org.springframework.stereotype.Service;
@@ -52,9 +52,9 @@ public class Printer {
 			List<String> row = new ArrayList<>();
 			row.add(e.getHeader());
 			row.add(e.getActualTopic());
-			row.add(e.getClassifiedTopic());
-			row.add(new DecimalFormat("####0.00").format(e.getClassifiedProbability()));
-			row.add(String.valueOf(e.isClassifiedCorrectly()));
+			row.add(e.getClassificatedTopic());
+			row.add(new DecimalFormat("####0.00").format(e.getClassificatedProbability()));
+			row.add(String.valueOf(e.isClassificatedCorrectly()));
 			table.add(row);
 		});
 		String[] headers = {"Header", "Actual Topic", "Classified Topic", "Classified Probability", "Is Classified Correctly"};
