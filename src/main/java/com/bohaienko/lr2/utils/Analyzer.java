@@ -95,7 +95,7 @@ public class Analyzer {
 
 					if (topicProb.isEmpty()) {
 						classificatedProbability[0] = 0.0;
-						classificatedTopic[0] = "Topic was not classified";
+						classificatedTopic[0] = "Topic was not classificated";
 					}
 					isClassificatedCorrectly.set(topics[finalI].equals(classificatedTopic[0]));
 				});
