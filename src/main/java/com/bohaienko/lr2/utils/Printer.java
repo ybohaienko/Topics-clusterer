@@ -7,6 +7,8 @@ import dnl.utils.text.table.TextTable;
 import org.apache.commons.lang.ArrayUtils;
 import org.springframework.stereotype.Service;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -67,5 +69,10 @@ public class Printer {
 		tt.setAddRowNumbering(true);
 		System.out.println(String.format("\n\n%17s%s", "TABLE NAME: ", tableName));
 		tt.printTable();
+		try {
+			tt.toCsv(new FileOutputStream(tableName + ".csv"));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 }

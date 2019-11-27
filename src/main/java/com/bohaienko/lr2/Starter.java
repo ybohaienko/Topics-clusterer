@@ -10,9 +10,11 @@ import com.bohaienko.lr2.utils.Printer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 import static com.bohaienko.lr2.utils.Printer.*;
 
@@ -30,6 +32,9 @@ public class Starter {
 	@Autowired
 	Printer printer;
 
+	@Autowired
+	private Environment env;
+
 	private List<List<String>> topicsSet, trainingSet, testSet;
 	private List<Dictionary> dictionary;
 	private List<Probability> denormProb, normProb;
@@ -38,6 +43,9 @@ public class Starter {
 	@EventListener(ApplicationReadyEvent.class)
 	public void init() {
 		String[] topics = {"transportation", "health", "show business"};
+		if (env.getProperty("topics") != null)
+			topics = Objects.requireNonNull(env.getProperty("topics")).split("\\s*,\\s*");
+
 		topicsSet = crawler.crawlByTopics(topics);
 		trainingSet = parser.getTrainingSet(topicsSet);
 		testSet = parser.getTestSet(topicsSet);
