@@ -2,49 +2,70 @@ package com.bohaienko.LR2.utils;
 
 import com.bohaienko.LR2.model.Dictionary;
 import com.bohaienko.LR2.model.Probability;
+import com.bohaienko.LR2.model.VerificationData;
 import dnl.utils.text.table.TextTable;
 import org.apache.commons.lang.ArrayUtils;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 @Service
 public class Printer {
-	public void printUsageStatisticTable(List<Dictionary> dictionaries, String[] topics) {
+	public static void printDictionary(List<Dictionary> dictionaries, String[] topics, String tableName) {
 		List<List<String>> table = new ArrayList<>();
 		for (Dictionary dict : dictionaries) {
 			List<String> row = new ArrayList<>();
 			row.add(dict.getWord());
 			Arrays.asList(topics).forEach(topic ->
-					dict.getWordUsage().forEach((key, value) -> {
+					dict.getUsage().forEach((key, value) -> {
 						if (key.equals(topic))
 							row.add(value.toString());
 					}));
 			table.add(row);
 		}
-		printTable(topics, table);
+		String[] headers = (String[]) ArrayUtils.addAll(new String[]{"word"}, topics);
+		printTable(headers, table, tableName);
 	}
 
-	public void printUsageStatisticTable2(List<Probability> probabilities, String[] topics) {
+	public static void printProbabilities(List<Probability> probabilities, String[] topics, String tableName) {
 		List<List<String>> table = new ArrayList<>();
 		for (Probability prob : probabilities) {
 			List<String> row = new ArrayList<>();
 			row.add(prob.getWord());
 			Arrays.asList(topics).forEach(topic ->
-					prob.getClassProbability().forEach((key, value) -> {
+					prob.getProbability().forEach((key, value) -> {
 						if (key.equals(topic))
-							row.add(value.toString());
+							row.add(new DecimalFormat("####0.00").format(value));
 					}));
 			table.add(row);
 		}
-		printTable(topics, table);
+		String[] headers = (String[]) ArrayUtils.addAll(new String[]{"word"}, topics);
+		printTable(headers, table, tableName);
 	}
 
-	private void printTable(String[] header, List<List<String>> table) {
-		String[] headers = (String[]) ArrayUtils.addAll(new String[]{"word"}, header);
+	public static void printVerification(List<VerificationData> verificationData, String tableName) {
+		List<List<String>> table = new ArrayList<>();
+		verificationData.forEach(e -> {
+			List<String> row = new ArrayList<>();
+			row.add(e.getHeader());
+			row.add(e.getActualTopic());
+			row.add(e.getClassifiedTopic());
+			row.add(new DecimalFormat("####0.00").format(e.getClassifiedProbability()));
+			row.add(String.valueOf(e.isClassifiedCorrectly()));
+			table.add(row);
+		});
+		String[] headers = {"Header", "Actual Topic", "Classified Topic", "Classified Probability", "Is Classified Correctly"};
+		printTable(headers, table, tableName);
+	}
+
+	private static void printTable(String[] headers, List<List<String>> table, String tableName) {
 		String[][] arrayTable = table.stream().map(l -> l.toArray(new String[0])).toArray(String[][]::new);
-		new TextTable(headers, arrayTable).printTable();
+		TextTable tt = new TextTable(headers, arrayTable);
+		tt.setAddRowNumbering(true);
+		System.out.println(String.format("\n\n%17s%s", "TABLE NAME: ", tableName));
+		tt.printTable();
 	}
 }

@@ -15,7 +15,7 @@ public class Probability {
 		return word;
 	}
 
-	public Map<String, Double> getClassProbability() {
+	public Map<String, Double> getProbability() {
 		return classProbability;
 	}
 

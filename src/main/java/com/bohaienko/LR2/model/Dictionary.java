@@ -15,7 +15,7 @@ public class Dictionary {
 		return word;
 	}
 
-	public Map<String, Integer> getWordUsage() {
+	public Map<String, Integer> getUsage() {
 		return wordUsage;
 	}
 }
