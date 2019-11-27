@@ -1,11 +1,11 @@
 package com.bohaienko.lr2.model;
 
 public class VerificationData {
-	private String header;
-	private String actualTopic;
-	private String classificatedTopic;
-	private double classificatedProbability;
-	private boolean isClassificatedCorrectly;
+	private final String header;
+	private final String actualTopic;
+	private final String classificatedTopic;
+	private final double classificatedProbability;
+	private final boolean isClassificatedCorrectly;
 
 	public VerificationData(
 			String header,

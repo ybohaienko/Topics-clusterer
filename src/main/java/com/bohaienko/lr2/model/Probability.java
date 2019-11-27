@@ -3,8 +3,8 @@ package com.bohaienko.lr2.model;
 import java.util.Map;
 
 public class Probability {
-	private String word;
-	private Map<String, Double> classProbability;
+	private final String word;
+	private final Map<String, Double> classProbability;
 
 	public Probability(String word, Map<String, Double> topicUsage) {
 		this.word = word;
