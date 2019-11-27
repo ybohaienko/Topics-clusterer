@@ -2,11 +2,11 @@ package com.bohaienko.LR2.model;
 
 import java.util.Map;
 
-public class ClassProbabilityStatistic {
+public class Probability {
 	private String word;
 	private Map<String, Double> classProbability;
 
-	public ClassProbabilityStatistic(String word, Map<String, Double> topicUsage) {
+	public Probability(String word, Map<String, Double> topicUsage) {
 		this.word = word;
 		this.classProbability = topicUsage;
 	}

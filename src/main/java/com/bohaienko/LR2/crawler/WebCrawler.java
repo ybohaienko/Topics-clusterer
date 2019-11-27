@@ -15,20 +15,15 @@ import java.util.List;
 public class WebCrawler {
 	public List<List<String>> crawlByTopics(String[] topics) {
 		List<List<String>> topicsHeaders = new ArrayList<>();
-		Arrays.asList(topics).forEach(topic -> {
-			topicsHeaders.add(crawlByTopic(topic));
-		});
+		Arrays.asList(topics).forEach(topic -> topicsHeaders.add(crawlByTopic(topic)));
 		return topicsHeaders;
 	}
 
-
 	private List<String> crawlByTopic(String topic) {
-		List<String> headers = new ArrayList<>();
-
 		if (topic.contains(" "))
 			topic = topic.replaceAll(" ", "%20");
-
 		String blogUrl = "https://www.nytimes.com/search?query=" + topic + "&sort=best";
+
 		Document doc = null;
 		try {
 			doc = Jsoup.connect(blogUrl).get();
@@ -36,10 +31,9 @@ public class WebCrawler {
 			e.printStackTrace();
 		}
 
+		List<String> headers = new ArrayList<>();
 		Elements elements = doc.select("h4.css-2fgx4k");
-		for (Element element : elements) {
-			headers.add(element.text());
-		}
+		Arrays.asList(elements).forEach(e -> headers.add(e.text()));
 		return headers;
 	}
 }

@@ -1,6 +1,6 @@
 package com.bohaienko.LR2.utils;
 
-import com.bohaienko.LR2.model.WordUsageStatistic;
+import com.bohaienko.LR2.model.Dictionary;
 import com.uttesh.exude.ExudeData;
 import com.uttesh.exude.exception.InvalidDataException;
 import org.springframework.stereotype.Service;
@@ -14,8 +14,8 @@ public class Parser {
 	public List<String> filterWords(List<String> words, String topic) {
 		String[] topicWords = topic.split("\\s+");
 		return words.stream()
-				.filter(w -> w.length() > 3)
-				.filter(w -> !Arrays.asList(topicWords).contains(w))
+				.filter(word -> word.length() > 3)
+				.filter(word -> !Arrays.asList(topicWords).contains(word))
 				.collect(Collectors.toList());
 	}
 
@@ -23,12 +23,10 @@ public class Parser {
 		return Arrays.asList(ExudeData.getInstance().filterStoppingsKeepDuplicates(texts.toString()).split("\\W+"));
 	}
 
-	public List<WordUsageStatistic> getFilledUsageStatistics(List<WordUsageStatistic> statistics, String[] topics) {
-		statistics.forEach(e -> {
-			for (String topic : topics) {
-				e.getWordUsage().putIfAbsent(topic, 0);
-			}
-		});
+	public List<Dictionary> getFilledUsageStatistics(List<Dictionary> statistics, String[] topics) {
+		statistics
+				.forEach(entry -> Arrays.asList(topics)
+						.forEach(topic -> entry.getWordUsage().putIfAbsent(topic, 0)));
 		return statistics;
 	}
 }
