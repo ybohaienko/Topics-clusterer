@@ -59,7 +59,7 @@ public class Printer {
 			row.add(String.valueOf(e.isClassificatedCorrectly()));
 			table.add(row);
 		});
-		String[] headers = {"Header", "Actual Topic", "Classified Topic", "Classified Probability", "Is Classified Correctly"};
+		String[] headers = {"Header", "Actual Topic", "Classificated Topic", "Probability", "Is Correct"};
 		printTable(headers, table, tableName);
 	}
 

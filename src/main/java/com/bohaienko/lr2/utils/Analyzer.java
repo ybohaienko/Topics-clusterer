@@ -68,12 +68,9 @@ public class Analyzer {
 
 	public List<VerificationData> verifyClassification(List<List<String>> testSet, String[] topics, List<Probability> normalizedProbabilities) {
 		data = new ArrayList<>();
-		System.out.println(testSet);
-
 		for (int i = 0; i < topics.length; i++) {
 			int finalI = i;
 			testSet.get(i).forEach(e -> {
-				System.out.println(e);
 				List<String> words = parser.getWordListOfText(e);
 				final String[] classificatedTopic = {null};
 				final double[] classificatedProbability = {0};
