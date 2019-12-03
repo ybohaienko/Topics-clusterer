@@ -5,6 +5,7 @@
 The app crawls website nytimes.com for headers of given topic and returns in console 
 AND creates separate .csv documents with:
 - Set of found relevant words in topics and their usage
+- Set of found relevant words repeated more than one time
 - Set of repeated more than one time words with attributes
 - .arff file to use with Weka library
 - Weka output after clasterization using HierarchicalClusterer with Euclidean distance function

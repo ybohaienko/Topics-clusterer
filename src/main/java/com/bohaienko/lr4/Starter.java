@@ -54,8 +54,10 @@ public class Starter {
 
 		headers = crawler.crawlByTopics(topics);
 		wordUsageList = analyzer.buildWordUsage(headers, topics);
-		wordUsageList = analyzer.filterWordsMoreThanOneUsage(wordUsageList);
 		printUsage(wordUsageList, "WordsUsage");
+
+		wordUsageList = analyzer.filterWordsMoreThanOneUsage(wordUsageList);
+		printUsage(wordUsageList, "WordsUsageFiltered");
 
 		wordAttributesList = analyzer.buildWordAttributes(headers, wordUsageList);
 		printAttributes(wordAttributesList, "WordsAttributes");
