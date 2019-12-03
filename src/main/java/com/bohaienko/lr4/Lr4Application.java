@@ -1,11 +1,11 @@
-package com.bohaienko.lr2;
+package com.bohaienko.lr4;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Lr2Application {
+public class Lr4Application {
 	public static void main(String[] args) {
-		SpringApplication.run(Lr2Application.class, args);
+		SpringApplication.run(Lr4Application.class, args);
 	}
 }

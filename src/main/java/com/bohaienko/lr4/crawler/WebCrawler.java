@@ -1,4 +1,4 @@
-package com.bohaienko.lr2.crawler;
+package com.bohaienko.lr4.crawler;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

@@ -1,0 +1,34 @@
+Cluster 0
+((((york:0.07692,(city:0.01923,york:0.01923):0.05769):0,((snow:0.01923,((city:0,quiz:0):0,quiz:0):0.01923):0,(snow:0.01923,dies:0.01923):0):0.05769):0.01923,(york:0.09615,((free:0.01923,(care:0,free:0):0.01923):0.03846,care:0.05769):0.03846):0):0.21154,(dies:0.05769,care:0.05769):0.25)
+
+Cluster 1
+(((((((before:0.01923,travel:0.01923):0.09615,travel:0.11538):0.13535,support:0.25074):0.04281,exercise:0.29354):0.01052,exercise:0.30407):0.02286,((weekly:0,weekly:0):0.15385,before:0.15385):0.17308):0.1158,support:0.44273)
+
+Clustered Instances
+
+0      16 ( 62%)
+1      10 ( 38%)
+
+
+Class attribute: word
+Classes to Clusters:
+
+ 0 1  <-- assigned to cluster
+ 3 0 | york
+ 2 0 | city
+ 0 2 | before
+ 0 2 | travel
+ 2 0 | snow
+ 0 2 | support
+ 2 0 | free
+ 0 2 | weekly
+ 2 0 | quiz
+ 0 2 | exercise
+ 2 0 | dies
+ 3 0 | care
+
+Cluster 0 <-- york
+Cluster 1 <-- before
+
+Incorrectly clustered instances :	21.0	 80.7692 %
+

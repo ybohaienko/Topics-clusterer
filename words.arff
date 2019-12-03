@@ -1,0 +1,33 @@
+@relation words
+
+@attribute x	numeric
+@attribute y	numeric
+@attribute word	string
+
+@data
+3	4	york
+7	4	city
+25	6	before
+26	6	travel
+13	4	snow
+52	7	support
+15	4	snow
+20	4	york
+32	6	travel
+8	4	york
+12	4	city
+25	4	free
+0	6	weekly
+12	4	quiz
+16	8	exercise
+8	6	before
+0	6	weekly
+12	4	quiz
+33	8	exercise
+48	4	dies
+29	4	care
+26	4	care
+14	4	dies
+24	7	support
+45	4	care
+26	4	free

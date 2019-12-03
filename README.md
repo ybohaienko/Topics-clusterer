@@ -1,13 +1,13 @@
-# Topics-classifier
+# Topics words-clasterer
 
-## The study project for creating programmed method of data classification
+## The study project for creating programmed method of data clasterization
 
 The app crawls website nytimes.com for headers of given topic and returns in console 
 AND creates separate .csv documents with:
-- Dictionary of found relevant words in topics and their usage
-- Denormalized probability of each certificated word
-- Normalized probability of each certificated word
-- Verification data to check sample analysis
+- Set of found relevant words in topics and their usage
+- Set of repeated more than one time words with attributes
+- .arff file to use with Weka library
+- Weka output after clasterization using HierarchicalClusterer with Euclidean distance function
 
 ## Prerequisites
 * **JDK >= 1.8.0_131**;

@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.bohaienko</groupId>
-	<artifactId>LR2_topic_classifier</artifactId>
+	<artifactId>LR4_topic_classifier</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>LR2_topic_classifier</name>
+	<name>LR4_topic_classifier</name>
 	<description>Study project for Spring Boot</description>
 
 	<properties>
@@ -32,6 +32,11 @@
             <groupId>com.massisframework</groupId>
             <artifactId>j-text-utils</artifactId>
             <version>0.3.4</version>
+        </dependency>
+        <dependency>
+            <groupId>nz.ac.waikato.cms.weka</groupId>
+            <artifactId>weka-stable</artifactId>
+            <version>3.8.0</version>
         </dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
